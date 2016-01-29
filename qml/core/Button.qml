@@ -1,28 +1,27 @@
 import QtQuick 1.1
 import "../style"
+
  Rectangle {
 	 ButtonStyle { id: style; }
 	 id: button
 	 width: style.buttonWidth; height: style.buttonHeight
 	 border.width: 1
 	 border.color: style.buttonBorderColor
-	 //radius: 4
 	 radius: ((width>=200)? height/2 : height/4 )
 	 smooth: true
 
 	 signal clicked;
-	//signal pressed;
 	 signal hovered;
 
-	 property alias text: text.text
-	 property bool toggleable: false;
+     property alias label: text.text
+     property bool toggleable: true;
 	 property bool toggled: false;
 
 	 state: "default"
 	 gradient: style.buttonGradient
 
 	Text {
-		 id: text
+         id: text
 		 anchors.verticalCenter: parent.verticalCenter
 		 anchors.verticalCenterOffset: 1
 		 anchors.left: parent.left
@@ -32,47 +31,51 @@ import "../style"
 	 }
 
 	 function onClicked() {
-/*		if (toggleable) {
-			if ( !toggled) { toggled = true; state = "toggled"; }
-			else { toggled = false; state = "hover"; }
-		}
-		 else state = "hover" //maybe do a check to see if hover is enabled first
-*/
-	 }
+     }
 
-//	 function onRelease() {
-//		 stat
-//	 }
+     function onReleased() {
+     }
 
 	MouseArea {
 		id: mouseArea
 		hoverEnabled: true;
 		anchors.fill: parent
-		onClicked: {
-		/*	if (button.toggleable) {
-				if (button.toggled) {
-					button.toggled = false
-					button.state = "hover"
-				}
-				else { button.toggled = true; button.state = "toggled"; }
-			}
-		*/
-			if (button.state=="pressed") button.state = "hover";
-			else { button.state = "pressed"; button.toggled = true; }
-			button.onClicked();
-		}
+        onPressedChanged: {
+            // When the button is toggleable, it doesn't set the toggle, instead
+            // it uses the button state in the next press change to determine if
+            // the toggle state should be updated to reflect the button state.
+            if ( button.state == "pressed" ) {
+                if ( button.toggleable ) {
+                    if ( button.toggled ) {
+                        button.state = "hover"
+                    } else {
+                        button.toggled = true;
+                        onClicked();
+                    }
+                } else {
+                    button.state = "hover";
+                    onRelease();
+                }
+            } else {
+                if ( button.toggleable ) {
+                    if (button.toggled) {
+                        button.toggled = false;
+                        onReleased();
+                    } else button.state = "pressed"
+                } else {
+                    button.state = "pressed";
+                    onClicked();
+                }
+            }
+        }
 		onHoveredChanged: {
-			if (button.state == "hover") button.state = "default"
-			else if (button.state == "default") {
-				button.state = "hover";
+            if (button.state == "default") {
+                button.state = "hover"
+            } else if (button.state == "hover") {
+                button.state = "default";
 			}
-
 		}
 	 }
-	Rectangle {
-		id: highlight
-		anchors.fill: button; radius: 10; color: "white"; opacity: 0
-	}
 
 	 states: [
 		State {
@@ -82,16 +85,15 @@ import "../style"
 		},
 		 State {
 			 name: "pressed"
-			// when: mouseArea.pressed && mouseArea.hoverEnabled;
 			 PropertyChanges { target: button; gradient: style.buttonGradientPressed; }
 			 PropertyChanges { target: text; color: style.buttonTextColorPressed; }
-		 },
-		 State {
+         }/*,
+         State {
 			 name: "toggled"
-			 PropertyChanges { target: button; text: "Toggled"; }
-			 PropertyChanges { target: button; gradient: style.buttonGradientToggled; }
-			 PropertyChanges { target: text; color: style.buttonTextColorToggled; }
-		  }
+             PropertyChanges { target: button; label: "Toggled"; }
+             PropertyChanges { target: button; gradient: style.buttonGradientPressed; }
+             PropertyChanges { target: text; color: style.buttonTextColorPressed; }
+          }*/
 
 	 ]
 

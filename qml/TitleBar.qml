@@ -4,13 +4,22 @@ Rectangle {
 	//Style{ id: style }
     id: dockTitleBar
     width: parent.width
-	height: style.titleBarHeight
+    height: style.titleBarHeight
 
 	property alias text: title.text
+    property alias icon: icon.source
 
-	Text{
+    Image {
+        id: icon
+        source: ""
+        anchors.right: title.left
+        anchors.verticalCenter: parent.verticalCenter
+    }
+    property Item content: Item {}
+
+    Text {
 		id: title;
-		text: qsTr("Unnamed");
+        text: "";
 		//font.pointSize: style.titleBarFontSize
 		anchors.centerIn: parent;
 	}

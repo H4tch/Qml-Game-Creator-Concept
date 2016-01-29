@@ -1,9 +1,11 @@
-// import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
 
+/**
+ * Created by Dan Hatch <danhatch333@gmail.com> 2012-2013
+**/
+
+
 /*
- *  This style is inspired by Blender.
- *
  *  To create your own style, back this file up and modify the following
  *  settings.
  */
@@ -17,10 +19,7 @@ QtObject {
 	//property int titleAnchor: parent.centerIn
 	property color mainTextColor: "#171717"
 	property color secondaryTextColor: "#d3d3d3"
-
-/* Button */
-
-
+    property color panelColor: "#333333"
 
 /* ToolBar */
 	property Gradient toolBarBackground:
@@ -29,6 +28,7 @@ QtObject {
         GradientStop { position: 1; color: "#303030"; }
     }
 // END ToolBar
+
 
 /* TitleBar */
 	property int titleBarFontSize: 12
@@ -43,8 +43,13 @@ QtObject {
     }
 // END TitleBar
 
+
 /* IconBar */
+    property int iconBarWidth: 64
+    property color iconBarColor: "#dddddd"
+    property color iconBarFontMain: "#444444"
 // END IconBar
+
 
 /* StartPortal */
     property color startPortalColor: "black"

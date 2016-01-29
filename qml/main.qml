@@ -1,9 +1,6 @@
-// import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
 import "core"
 import "style"
-
-
 
 Rectangle {
     property variant style: Style { id: style }
@@ -20,44 +17,39 @@ Grid {
 	columns: 1
 	anchors.fill: parent
 
-	Row {
+    Row {
 		id: topRow
-		 width: windowGrid.width
+         width: parent.width
 		 clip: true
 		Rectangle {
 			id: toolBarHolder
 			width: window.width
 			height: 64
 			gradient: style.toolBarBackground
-			Button{ x:60; y:30; text:"Click Me!"; }
+            Button{ x:60; y:30; label:"Click Me!"; }
 		}
 	} // topRow
 
 	Row {
 		id: mainRow
 		width: parent.width
-		height: parent.height - topRow.height
+        height: parent.height - topRow.height
 
-		Column {
+        Column {
 			id: iconBarColumn
-			//width: iconBarHolder
-            width: 64
-			height: parent.height
-			Rectangle {
-				id: iconBarHolderVertical
-				width: parent.width
-				height: parent.height
-				color: "#202020"
-                IconBar { id: iconBar; }
-                //anchors.right: iconBar.right
-			}
-		} // iconBar
+            width: style.iconBarWidth
+            height: parent.height
+            IconBar { id: iconBar; clip: true }
+        } // iconBarColumn
 
-        /// There should really be a Grid here, which holds different Editor Views
-        // based on the iconBar's selection.
+        Grid {
+            id: editorView
+            width: parent.width - iconBar.width
+            height: parent.height
+
 		Column {
 			id: leftColumn
-            width: -1
+            width: 0
 			height: parent.height
 
 			Rectangle {
@@ -67,17 +59,19 @@ Grid {
 		}
 
         Column {
-            id: middleColumn
+            id: middleColum
             height: parent.height
             //width: parent.width - leftColumn.width - rightColumn.width
             anchors.left: leftColumn.right
+            anchors.leftMargin: 1
             anchors.right: rightColumn.left
+            anchors.rightMargin: 1
 
             Rectangle {
                 id: middleColumnHolder
                 width: parent.width
                 height: parent.height
-                x: 2
+                x: 0
                 StartPortal {}
             }
         } // middleColumn
@@ -86,7 +80,7 @@ Grid {
         Column {
             id: rightColumn
             width: 150
-            anchors.right: parent.right
+            anchors.right: editorView.right
             height: parent.height
 
             Rectangle {
@@ -98,6 +92,7 @@ Grid {
                 ClassList { x: 0; y: 0; anchors.rightMargin: 0; anchors.bottomMargin: 0; anchors.leftMargin: 0; anchors.topMargin: 0; anchors.fill: parent}
             }
         }
+        } // editorView
 
 
     } // mainRow

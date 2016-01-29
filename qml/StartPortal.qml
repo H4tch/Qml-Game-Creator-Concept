@@ -10,12 +10,12 @@ Rectangle {
     TitleBar {
 		id: titleBar
 		text: qsTr("Welcome, please choose an action.");
+        //icon: "../show.png"
     }
 
 	Grid {
 		 id: grid
 		 anchors.fill: parent
-		 //StartPortalButton {}
-
+         //StartPortalThumbnail {}
     }
 }
